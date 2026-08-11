@@ -1,27 +1,58 @@
 # SuperPI
 
-the source code of performing single thread CPU benchmark
+Single-thread CPU benchmark based on Takuyo Ooura's FFT/AGM Pi calculation.
 
 -----
 
-## build on linux
-**use gcc :**
+## Build
 
-```gcc -O -funroll-loops -fomit-frame-pointer pi_fftcs.c fftsg_h.c -lm -o pi_css5```
+### Make (gcc)
 
-**use makefile :**
+```sh
+make all
+```
 
-```make all```
+Or directly:
 
-**use cmake :**
+```sh
+gcc -O -funroll-loops -fomit-frame-pointer pi_fftcs.c fftsg_h.c -lm -o pi_css5
+```
 
-```mkdir build && cd build && cmake ..```
+### CMake
 
-*you can either open it in vscode and build with cmake plugin*
+```sh
+cmake -S . -B build
+cmake --build build
+```
+
+Compiler-appropriate flags are applied automatically. Verified toolchains:
+
+- MSVC (`cl.exe`, Visual Studio 2026)
+- GCC (MinGW / MSYS2 UCRT64)
+- Clang (MSYS2 CLANG64)
+
+### xmake
+
+```sh
+xmake f -m release
+xmake
+```
+
+Switch toolchain:
+
+```sh
+xmake f --toolchain=msvc -c -m release
+xmake f --toolchain=gcc -c -m release
+xmake f --toolchain=clang -c -m release
+```
 
 -----
-## run on linux
 
-```./pi_css5 $((1<<20))```
+## Run
 
-*the parameter is the number of decimal digits you want to calculate in the program. it will be round to the power of two.*
+```sh
+./pi_css5 $((1 << 20))     # Linux / Unix
+pi_css5.exe 1048576        # Windows
+```
+
+The argument is the number of decimal digits to compute. It is rounded up to a power of two, and the result is written to `pi<digits>.txt`.
